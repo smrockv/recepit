@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? '/recepit/' : './',
+  //base: process.env.GITHUB_PAGES ? '/recepit/' : './',
+  base: '/recepit/',
   plugins: [react()],
 })
