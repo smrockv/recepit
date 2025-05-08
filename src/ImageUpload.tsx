@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, type ChangeEvent, useEffect } from 'react';
 import { Box, Button, Typography, styled } from '@mui/material';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
