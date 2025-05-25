@@ -13,17 +13,20 @@ interface ConfigModalProps {
 }
 
 function ConfigModal({ open, onClose }: ConfigModalProps) {
-  const [apiKey, setApiKey] = useState<string>(''); // ステートの初期値を空文字列に設定
+  const [apiKey, setApiKey] = useState<string>('');
+  const [postUrl, setPostUrl] = useState<string>('');
 
   // モーダルが開かれたときにローカルストレージから値を読み込む
   useEffect(() => {
     if (open) {
       setApiKey(localStorage.getItem('geminiApiKey') || '');
+      setPostUrl(localStorage.getItem('postUrl') || '');
     }
   }, [open]); // openが変更されたときにエフェクトを実行
 
   const handleConfirm = () => {
     localStorage.setItem('geminiApiKey', apiKey);
+    localStorage.setItem('postUrl', postUrl);
     onClose();
   };
 
@@ -36,7 +39,7 @@ function ConfigModal({ open, onClose }: ConfigModalProps) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: 400,
-          bgcolor: 'background.paper',
+          bgcolor: '#252525',
           boxShadow: 24,
           p: 4,
           display: 'flex',
@@ -44,12 +47,19 @@ function ConfigModal({ open, onClose }: ConfigModalProps) {
           gap: 2,
         }}
       >
-        <Typography variant="h6" sx={{ color: 'black' }}>Gemini API Key</Typography>
+        <Typography variant="h6">Gemini API Key</Typography>
         <TextField
           label="Enter API Key"
           variant="outlined"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
+        />
+        <Typography variant="h6" >POST URL</Typography>
+        <TextField
+          label="Enter Post URL"
+          variant="outlined"
+          value={postUrl}
+          onChange={(e) => setPostUrl(e.target.value)}
         />
         <Button variant="contained" onClick={handleConfirm}>
           Confirm
