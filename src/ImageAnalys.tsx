@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { useBackdrop } from './context/BackdropContext';
+import ServerPost from './ServerPost';
 
 interface ImageAnalysisSectionProps {
   selectedFile: File | null;
 }
 
-export default function ImageAnalysisSection({ selectedFile }: ImageAnalysisSectionProps) {
+export default function ImageAnalys({ selectedFile }: ImageAnalysisSectionProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
+  const [postData, setPostData] = useState<any>();
   const { showBackdrop, hideBackdrop } = useBackdrop(); // BackdropContextから状態を取得
 
   const processReceipt = async (file: File) => {
@@ -38,10 +40,12 @@ export default function ImageAnalysisSection({ selectedFile }: ImageAnalysisSect
 
         const result = await model.generateContent([prompt, { inlineData: { mimeType: file.type, data: base64Image } }]);
         const response = await result.response;
-        const text = response.text().replace('```json', '').replace('```', '')
-        console.log("Raw API Response:", text);
-        const parsedResult = JSON.parse(text);
+        const jsonText = response.text().replace('```json', '').replace('```', '')
+        console.log("Raw API Response:", jsonText);
+        
+        const parsedResult = JSON.parse(jsonText);
         setResult(parsedResult);
+        setPostData(JSON.stringify(parsedResult));
         setIsLoading(false);
       };
     } catch (e) {
@@ -59,6 +63,10 @@ export default function ImageAnalysisSection({ selectedFile }: ImageAnalysisSect
     }
   }, [isLoading])
 
+  useEffect(() => {
+    setResult(null);
+  }, [selectedFile]);
+  
   // const handleClick = (event: React.FormEvent) => {
   //   event.preventDefault();
   //   if (selectedFile) {
@@ -81,24 +89,27 @@ export default function ImageAnalysisSection({ selectedFile }: ImageAnalysisSect
       {/* isLoading && <Typography variant="body1" sx={{ mt: 2 }}>処理中...</Typography> */}
       {/* error && <Typography variant="body1" color="error" sx={{ mt: 2 }}>エラー: {error}</Typography> */}
       {result && (
-        <Box sx={{ mt: 2, border: '1px solid #ccc', p: 2 }}>
-          <Typography variant="h6">抽出結果:</Typography>
-          <Typography><strong>購入日:</strong> {result.purchaseDate}</Typography>
-          <Typography><strong>店舗名:</strong> {result.storeName}</Typography>
-          <Typography><strong>小計:</strong> {result.subtotal}</Typography>
-          <Typography><strong>合計:</strong> {result.total}</Typography>
-          <Typography><strong>支払い方法:</strong> {result.paymentMethod}</Typography>
-          <Typography variant="h6" sx={{ mt: 2 }}>購入アイテム:</Typography>
-          <ul>
-            {result.items.map((item: any, index: number) => (
-              <li key={index}>
-                <Typography>
-                  {item.itemName} (数量: {item.quantity}, 単価: {item.unitPrice}, 税率: {item.taxRate}, 小計: {item.itemSubtotal})
-                </Typography>
-              </li>
-            ))}
-          </ul>
-        </Box>
+        <div>
+          <Box sx={{ mt: 2, border: '1px solid #ccc', p: 2 }}>
+            <Typography variant="h4" align={'center'} sx={{ mb: 2 }}>抽出結果</Typography>
+            <Typography><strong>購入日:</strong> {result.purchaseDate}</Typography>
+            <Typography><strong>店舗名:</strong> {result.storeName}</Typography>
+            <Typography><strong>小計:</strong> {result.subtotal}</Typography>
+            <Typography><strong>合計:</strong> {result.total}</Typography>
+            <Typography><strong>支払い方法:</strong> {result.paymentMethod}</Typography>
+            <Typography variant="h5" align={'center'} sx={{ mt: 2 }}>購入アイテム</Typography>
+            <ul>
+              {result.items.map((item: any, index: number) => (
+                <li key={index}>
+                  <Typography>
+                    {item.itemName} (数量: {item.quantity}, 単価: {item.unitPrice}, 税率: {item.taxRate}, 小計: {item.itemSubtotal})
+                  </Typography>
+                </li>
+              ))}
+            </ul>
+          </Box>
+          <ServerPost jsonData={postData} />
+        </div>
       )}
     </Box>
   );

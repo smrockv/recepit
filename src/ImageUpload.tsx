@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, useEffect } from 'react';
 import { Box, Button, Typography, styled } from '@mui/material';
-import ImageAnalysisSection from './ImageAnalysisSection';
+import ImageAnalys from './ImageAnalys';
 
 interface ImageUploadProps {
   // You can add props here if needed
@@ -11,12 +11,10 @@ export default function ImageUpload({ }: ImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile(null);
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       setSelectedFile(file);
-
-    } else {
-      setSelectedFile(null);
     }
   };
 
@@ -64,7 +62,7 @@ export default function ImageUpload({ }: ImageUploadProps) {
           />
         </Box>
       )}
-      <ImageAnalysisSection selectedFile={selectedFile} />
+      { selectedFile && <ImageAnalys selectedFile={selectedFile} /> }
     </div>
   );
 };

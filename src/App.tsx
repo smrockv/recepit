@@ -11,7 +11,7 @@ import {  useBackdrop } from './context/BackdropContext'; // BackdropContextを�
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { backdropOpen, showBackdrop } = useBackdrop(); // BackdropContextから状態を取得
+  const { backdropOpen } = useBackdrop(); // BackdropContextから状態を取得
 
   return (
     <>
