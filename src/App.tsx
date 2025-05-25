@@ -1,45 +1,37 @@
 import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import './App.css'
+//import './App.css'
 import ImageUpload from './ImageUpload';
 import ConfigModal from './ConfigModal';
-import { Button } from '@mui/material';
+import { Box, Button, Container, createTheme, ThemeProvider, Backdrop, CircularProgress } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+import {  useBackdrop } from './context/BackdropContext'; // BackdropContextをインポート
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { backdropOpen, showBackdrop } = useBackdrop(); // BackdropContextから状態を取得
 
   return (
     <>
-      <div>
-        {/* <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p> */}
+      <Container fixed>
         <div style={{ position: 'absolute', top: 10, right: 10 }}>
-          <Button variant="contained" onClick={() => setIsModalOpen(true)}>
-            コンフィグ
+          <Button variant="contained"
+            startIcon={<SettingsIcon />}
+            onClick={() => setIsModalOpen(true)}>
+            config
           </Button>
         </div>
-        <div style={{ marginTop: 50 }}> {/* Add margin top to prevent content from being hidden behind the button */}
+        <Box sx={{ mt: 10 }}>
           <ImageUpload />
-        </div>
-      </div>
-      {/* <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
+        </Box>
+      </Container>
       <ConfigModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* Backdrop コンポーネントを追加 */}
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={backdropOpen}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   )
 }

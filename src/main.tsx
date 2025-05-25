@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createTheme, ThemeProvider } from '@mui/material';
 //import './index.css'
 import CssBaseline from '@mui/material/CssBaseline';
+import { BackdropProvider, useBackdrop } from './context/BackdropContext'; // BackdropContextをインポート
 import App from './App.tsx'
 
 const darkTheme = createTheme({
@@ -15,8 +16,10 @@ const darkTheme = createTheme({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <App />
+      <BackdropProvider>
+        <CssBaseline />
+        <App />
+      </BackdropProvider>
     </ThemeProvider>
   </StrictMode>
 )

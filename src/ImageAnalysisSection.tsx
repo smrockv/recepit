@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { useBackdrop } from './context/BackdropContext';
 
 interface ImageAnalysisSectionProps {
   selectedFile: File | null;
 }
 
-export default function ImageAnalysisSection({selectedFile}: ImageAnalysisSectionProps) {
+export default function ImageAnalysisSection({ selectedFile }: ImageAnalysisSectionProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
+  const { showBackdrop, hideBackdrop } = useBackdrop(); // BackdropContextから状態を取得
 
   const processReceipt = async (file: File) => {
     setIsLoading(true);
@@ -38,53 +40,46 @@ export default function ImageAnalysisSection({selectedFile}: ImageAnalysisSectio
         const response = await result.response;
         const text = response.text().replace('```json', '').replace('```', '')
         console.log("Raw API Response:", text);
-
-        try {
-          const parsedResult = JSON.parse(text);
-          setResult(parsedResult);
-
-          // Send data to Google Sheets
-          const scriptUrl = 'https://script.google.com/macros/s/AKfycbznoA3AjHeGUntu8y1fAfF4bI0motkJi8KXmMNOY4ir5cZ2CGdQD6bVueWmmFbMftzHKA/exec';
-          try {
-            const postResponse = await fetch(scriptUrl, {
-              method: 'POST',
-              mode: "no-cors",
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(parsedResult),
-            });
-            console.log('Data sent to Google Sheets:', postResponse.ok);
-          } catch (postError) {
-            console.error('Error sending data to Google Sheets:', postError);
-          }
-        } catch (parseError) {
-          setError('Failed to parse API response.');
-          console.error('Parsing error:', parseError);
-        }
+        const parsedResult = JSON.parse(text);
+        setResult(parsedResult);
+        setIsLoading(false);
       };
-    } catch (apiError) {
-      setError('Error processing receipt with Gemini API.');
-      console.error('API error:', apiError);
-    } finally {
+    } catch (e) {
+      setError('Error processing receipt');
+      console.error('error:', e);
       setIsLoading(false);
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (isLoading) {
+      showBackdrop();
+    } else {
+      hideBackdrop();
+    }
+  }, [isLoading])
+
+  // const handleClick = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   if (selectedFile) {
+  //     processReceipt(selectedFile);
+  //   }
+  // };
+  const handleClick = () => {
     if (selectedFile) {
       processReceipt(selectedFile);
     }
-  };
+  }
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-      <Button type="submit" variant="contained" fullWidth disabled={!selectedFile || isLoading}>
-        解析
-      </Button>
-      {isLoading && <Typography variant="body1" sx={{ mt: 2 }}>処理中...</Typography>}
-      {error && <Typography variant="body1" color="error" sx={{ mt: 2 }}>エラー: {error}</Typography>}
+    <Box sx={{ mt: 2 }}>
+      {selectedFile &&
+        <Button type="button" onClick={handleClick} variant="contained" fullWidth>
+          解析
+        </Button>
+      }
+      {/* isLoading && <Typography variant="body1" sx={{ mt: 2 }}>処理中...</Typography> */}
+      {/* error && <Typography variant="body1" color="error" sx={{ mt: 2 }}>エラー: {error}</Typography> */}
       {result && (
         <Box sx={{ mt: 2, border: '1px solid #ccc', p: 2 }}>
           <Typography variant="h6">抽出結果:</Typography>
