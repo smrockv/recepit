@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createTheme, ThemeProvider } from '@mui/material';
 //import './index.css'
 import CssBaseline from '@mui/material/CssBaseline';
-import { BackdropProvider, useBackdrop } from './context/BackdropContext'; // BackdropContextをインポート
+import { BackdropProvider } from './context/BackdropContext'; // BackdropContextをインポート
 import App from './App.tsx'
 
 const darkTheme = createTheme({

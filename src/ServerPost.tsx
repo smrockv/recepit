@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Typography, Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button, Box, Typography } from '@mui/material';
 import { useBackdrop } from './context/BackdropContext';
 
 interface Props {
@@ -73,9 +73,9 @@ function ServerPost({ jsonData }: Props) {
       >
         スプレッドシートへ登録
       </Button>
-      {/* isLoading && <Typography variant="body2" sx={{ mt: 1 }}>Registering...</Typography >*/}
-      {/* error && <Typography variant="body2" color="error" sx={{ mt: 1 }}>Error: {error}</Typography> */}
-      {/* isSuccess && <Typography variant="body2" color="success" sx={{ mt: 1 }}>Successfully registered!</Typography> */}
+      {isLoading && <Typography variant="body2" sx={{ mt: 1 }}>Registering...</Typography >}
+      {error && <Typography variant="body2" color="error" sx={{ mt: 1 }}>Error: {error}</Typography> }
+      {isSuccess && <Typography variant="body2" color="success" sx={{ mt: 1 }}>Successfully registered!</Typography> }
     </Box>
   );
 };

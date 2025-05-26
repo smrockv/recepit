@@ -1,10 +1,7 @@
 import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-//import './App.css'
 import ImageUpload from './ImageUpload';
 import ConfigModal from './ConfigModal';
-import { Box, Button, Container, createTheme, ThemeProvider, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Button, Container, Backdrop, CircularProgress } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import {  useBackdrop } from './context/BackdropContext'; // BackdropContextをインポート

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { useBackdrop } from './context/BackdropContext';
@@ -86,8 +86,8 @@ export default function ImageAnalys({ selectedFile }: ImageAnalysisSectionProps)
           解析
         </Button>
       }
-      {/* isLoading && <Typography variant="body1" sx={{ mt: 2 }}>処理中...</Typography> */}
-      {/* error && <Typography variant="body1" color="error" sx={{ mt: 2 }}>エラー: {error}</Typography> */}
+      {isLoading && <Typography variant="body1" sx={{ mt: 2 }}>処理中...</Typography> }
+      {error && <Typography variant="body1" color="error" sx={{ mt: 2 }}>エラー: {error}</Typography> }
       {result && (
         <div>
           <Box sx={{ mt: 2, border: '1px solid #ccc', p: 2 }}>
