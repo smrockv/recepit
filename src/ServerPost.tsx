@@ -65,7 +65,7 @@ function ServerPost({ jsonData }: Props) {
 
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <Box sx={{ mt: 2, mb: 10 }}>
       <Button
         variant="contained"
         fullWidth
