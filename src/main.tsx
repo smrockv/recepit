@@ -9,6 +9,16 @@ import App from './App.tsx'
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#FFA500', // オレンジ色
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        color: 'primary', // デフォルトのボタンの色をprimaryに設定
+      },
+    },
   },
 });
 
