@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import ImageUpload from './ImageUpload';
 import ConfigModal from './ConfigModal';
-import { Box, Button, Container, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Button, Container, Backdrop, CircularProgress, Typography, Grid } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import {  useBackdrop } from './context/BackdropContext'; // BackdropContextをインポート
+import { useBackdrop } from './context/BackdropContext'; // BackdropContextをインポート
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,14 +13,21 @@ function App() {
   return (
     <>
       <Container fixed>
-        <div style={{ position: 'absolute', top: 10, right: 10 }}>
-          <Button variant="contained"
-            startIcon={<SettingsIcon />}
-            onClick={() => setIsModalOpen(true)}>
-            config
-          </Button>
-        </div>
-        <Box sx={{ mt: 10 }}>
+        <Grid container spacing={2} sx={{ mt:2 }}>
+          <Grid size={10}>
+            <Typography variant='h4'>Recepit Register</Typography>
+          </Grid>
+          <Grid size={2}>
+            {/* <div style={{ position: 'absolute', top: 10, right: 10 }}> */}
+            <Button variant="contained"
+              startIcon={<SettingsIcon />}
+              onClick={() => setIsModalOpen(true)}>
+              config
+            </Button>
+            {/* </div> */}
+          </Grid>
+        </Grid>
+        <Box sx={{ mt: 3 }}>
           <ImageUpload />
         </Box>
       </Container>

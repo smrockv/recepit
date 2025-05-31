@@ -36,7 +36,7 @@ export default function ImageAnalys({ selectedFile }: ImageAnalysisSectionProps)
       reader.onloadend = async () => {
         const base64Image = (reader.result as string).split(',')[1];
 
-        const prompt = "Extract the following information from this receipt: Store name, purchase date, a list of purchased items (item name, quantity, unit price, tax rate if available, sub total for the item), subtotal, total amount (including tax), and payment method (cash or credit card). Provide the output in a structured JSON format with keys like 'storeName', 'purchaseDate', 'items', 'subtotal', 'total', 'paymentMethod'. The 'items' should be an array of objects, each with 'itemName', 'quantity', 'unitPrice', 'taxRate', and 'itemSubtotal'.";
+        const prompt = "Extract the following information from this receipt: Store name, purchase date, a list of purchased items (item name, quantity, unit price, tax rate if available, sub total for the item), subtotal, total amount (including tax), and payment method (cash or credit card). If the store is OK Store, also extract the amount next to '食料品3/103割引'. Provide the output in a structured JSON format with keys like 'storeName', 'purchaseDate', 'items', 'subtotal', 'total', 'paymentMethod'. The 'items' should be an array of objects, each with 'itemName', 'quantity', 'unitPrice', 'taxRate', and 'itemSubtotal'. If the store is OK Store, add a key 'okStoreDiscount' with the extracted discount amount.";
 
         const result = await model.generateContent([prompt, { inlineData: { mimeType: file.type, data: base64Image } }]);
         const response = await result.response;
@@ -91,12 +91,13 @@ export default function ImageAnalys({ selectedFile }: ImageAnalysisSectionProps)
       {result && (
         <div>
           <Box sx={{ mt: 2, border: '1px solid #ccc', p: 2 }}>
-            <Typography variant="h4" align={'center'} sx={{ mb: 2 }}>抽出結果</Typography>
+            <Typography variant="h4" align={'center'} sx={{ mb: 2 }}>解析結果</Typography>
             <Typography><strong>購入日:</strong> {result.purchaseDate}</Typography>
             <Typography><strong>店舗名:</strong> {result.storeName}</Typography>
             <Typography><strong>小計:</strong> {result.subtotal}</Typography>
             <Typography><strong>合計:</strong> {result.total}</Typography>
             <Typography><strong>支払い方法:</strong> {result.paymentMethod}</Typography>
+            {result.okStoreDiscount && <Typography><strong>食料品3/103割引:</strong> {result.okStoreDiscount}</Typography>}
             <Typography variant="h5" align={'center'} sx={{ mt: 2 }}>購入アイテム</Typography>
             <ul>
               {result.items.map((item: any, index: number) => (
