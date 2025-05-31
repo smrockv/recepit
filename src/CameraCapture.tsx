@@ -25,16 +25,21 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const [isRearCamera, setIsRearCamera] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     stopCamera();
   };
+  const handleSwitch = () => {
+    setIsRearCamera(!isRearCamera);
+  };
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const videoParam = (isRearCamera) ? { exact: "environment" } : { facingMode: "user" };
+      const stream = await navigator.mediaDevices.getUserMedia({ video: videoParam });
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -78,7 +83,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}>
+      <Button variant="contained" fullWidth onClick={handleOpen}>
         カメラ
       </Button>
       <Modal
@@ -89,11 +94,14 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
       >
         <Box sx={style}>
           <Typography id="camera-modal-title" variant="h6" component="h2">
-            カメラで撮影
+          {isRearCamera ? "リア" : "フロント"}カメラで撮影
           </Typography>
           <video ref={videoRef} autoPlay style={{ width: '100%', height: 'auto', maxWidth: '100%' }} />
           <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Hidden canvas for capture */}
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
+            <Button variant="contained" onClick={handleSwitch}>
+              切り替え
+            </Button>
             <Button variant="contained" onClick={captureImage}>
               取り込む
             </Button>

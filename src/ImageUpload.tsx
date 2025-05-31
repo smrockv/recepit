@@ -65,7 +65,7 @@ export default function ImageUpload({ }: ImageUploadProps) {
     <Box>
       {/* <Box sx={{ display: 'flex', gap: 2, mb: 2 }}> */}
         <Grid container spacing={2} sx={{ mt: 2 }}>
-          <Grid size={10}>
+          <Grid size={6}>
             <Button
               component="label"
               variant="contained"
@@ -76,7 +76,7 @@ export default function ImageUpload({ }: ImageUploadProps) {
               <VisuallyHiddenInput type="file" onChange={handleFileChange} accept="image/*" />
             </Button>
           </Grid>
-          <Grid size={2}>
+          <Grid size={6}>
             <CameraCapture 
             //isOpen={isCameraModalOpen}
             //onClose={() => setIsCameraModalOpen(false)}
