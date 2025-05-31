@@ -21,7 +21,10 @@ export default function ImageUpload({ }: ImageUploadProps) {
     }
   };
 
-  const handleCameraCapture = (imageData: string) => {
+  const handleCameraCapture = (imageData: string| null) => {
+    if (imageData == null) {
+      return;
+    }
     // Convert Base64 string back to a File object or Blob if ImageAnalys requires it
     // For now, let's just set the preview URL directly from the Base64 string
     // setSelectedFile(null);
