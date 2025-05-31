@@ -10,7 +10,7 @@ interface ImageUploadProps {
 export default function ImageUpload({ }: ImageUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+  //const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedFile(null);
@@ -34,7 +34,7 @@ export default function ImageUpload({ }: ImageUploadProps) {
     fetch(imageData)
       .then(res => res.blob())
       .then(blob => setSelectedFile(new File([blob], "captured-image.png", { type: "image/png" })));
-    setIsCameraModalOpen(false); // Close modal after capture
+    //setIsCameraModalOpen(false); // Close modal after capture
   };
 
   useEffect(() => {
@@ -77,7 +77,10 @@ export default function ImageUpload({ }: ImageUploadProps) {
             </Button>
           </Grid>
           <Grid size={2}>
-            <CameraCapture isOpen={isCameraModalOpen} onClose={() => setIsCameraModalOpen(false)} onCapture={handleCameraCapture} />
+            <CameraCapture 
+            //isOpen={isCameraModalOpen}
+            //onClose={() => setIsCameraModalOpen(false)}
+            onCapture={handleCameraCapture} />
           </Grid>
         </Grid>
       {/* </Box> */}
