@@ -25,7 +25,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const [isRearCamera, setIsRearCamera] = useState(false);
+  const [isRearCamera, setIsRearCamera] = useState(true);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -34,6 +34,8 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
   };
   const handleSwitch = () => {
     setIsRearCamera(!isRearCamera);
+    stopCamera();
+    startCamera();
   };
 
   const startCamera = async () => {
