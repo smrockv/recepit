@@ -40,9 +40,9 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
 
   const startCamera = async () => {
     try {
-      const videoParam = (isRearCamera) ? { facingMode: { exact: "environment" } } : { facingMode: "user" };
+      const videoParam = (isRearCamera) ? { facingMode: { exact: "environment" }, focusMode: "auto" } : { facingMode: "user", focusMode: "auto" };
       const stream = await navigator.mediaDevices.getUserMedia({ video: videoParam });
-
+      stream.getTracks 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
