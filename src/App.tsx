@@ -14,11 +14,11 @@ function App() {
     <>
       <Container fixed>
         <Grid container spacing={2} sx={{ mt:2 }} justifyContent="flex-end">
-          <Grid size={6}>
+          <Grid size={8}>
             <Typography variant='h4'>Recepit Scan</Typography>
           </Grid>
-          <Grid size={6}>
-            <div style={{ position: 'absolute', top: 10, right: 60 }}>
+          <Grid size={4}>
+            <div style={{ position: 'absolute', top: 10, right: 10 }}>
             <Button variant="contained"
               startIcon={<SettingsIcon />}
               onClick={() => setIsModalOpen(true)}>
