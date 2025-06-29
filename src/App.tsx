@@ -13,18 +13,18 @@ function App() {
   return (
     <>
       <Container fixed>
-        <Grid container spacing={2} sx={{ mt:2 }}>
-          <Grid size={10}>
-            <Typography variant='h4'>Reg Recepit</Typography>
+        <Grid container spacing={2} sx={{ mt:2 }} justifyContent="flex-end">
+          <Grid size={6}>
+            <Typography variant='h4'>Recepit Scan</Typography>
           </Grid>
-          <Grid size={2}>
-            {/* <div style={{ position: 'absolute', top: 10, right: 10 }}> */}
+          <Grid size={6}>
+            <div style={{ position: 'absolute', top: 10, right: 60 }}>
             <Button variant="contained"
               startIcon={<SettingsIcon />}
               onClick={() => setIsModalOpen(true)}>
               config
             </Button>
-            {/* </div> */}
+            </div>
           </Grid>
         </Grid>
         <Box sx={{ mt: 3 }}>
