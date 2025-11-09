@@ -98,7 +98,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
           <Typography id="camera-modal-title" variant="h6" component="h2">
           {isRearCamera ? "リア" : "フロント"}カメラで撮影
           </Typography>
-          <video ref={videoRef} autoPlay style={{ width: '80%', height: 'auto', maxWidth: '100%' }} />
+          <video ref={videoRef} autoPlay style={{ width: '60%', height: 'auto', maxWidth: '100%' }} />
           <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Hidden canvas for capture */}
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
             <Button variant="contained" onClick={handleSwitch}>
